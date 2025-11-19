@@ -1,0 +1,37 @@
+package com.employee_management.controller;
+
+import java.util.Collections;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import com.employee_management.service.EmployeeService;
+
+@WebMvcTest(EmployeeViewController.class)
+public class EmployeeViewControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private EmployeeService employeeService;
+
+    @Test
+    void testEmployeeListViewLoads() throws Exception {
+
+        Mockito.when(employeeService.getAllEmployees()).thenReturn(Collections.emptyList());
+
+        mockMvc.perform(get("/employees"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("employees"))
+                .andExpect(model().attributeExists("employees"));
+    }
+}
