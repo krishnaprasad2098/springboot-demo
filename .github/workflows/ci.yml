@@ -24,7 +24,7 @@ jobs:
           java-version: '21'
       
       - name: Build Maven Package
-        runs: mvn clean package
+        run: mvn clean package
 
       - name: AWS Configure
         uses: aws-actions/configure-aws-credentials@v5.1.0
