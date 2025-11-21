@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import org.springframework.boot.test.mock.mockito.MockBean;
 import com.employee_management.service.EmployeeService;
 
 @WebMvcTest(EmployeeViewController.class)
@@ -20,7 +21,7 @@ public class EmployeeViewControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    // @MockBean
+    @MockBean
     private EmployeeService employeeService;
 
     @Test
