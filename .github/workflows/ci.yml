@@ -35,4 +35,4 @@ jobs:
 
       - name: Push to S3
         run: |
-          aws s3 cp target/*.war s3://{{ secrets.S3_BUCKET_NAME }}/app/sredemo.war
+          aws s3 cp target/*.war s3://${{ secrets.S3_BUCKET_NAME }}/sredemo.war
