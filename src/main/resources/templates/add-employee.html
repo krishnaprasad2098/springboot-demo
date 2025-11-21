@@ -2,20 +2,41 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Add Employee</title>
+<style>
+	h2 {
+        text-align: center;
+      }
+	form{
+		display: flex;
+		flex-direction: column;
+		gap: 1px;
+	}
+	input{
+		max-width: fit-content;
+		padding: .25rem;
+		border-radius: .3rem;
+	}
+	button {
+        padding: 0.5rem;
+        border-radius: 10px;
+		background-color: blue;
+		color: white;
+		max-width: fit-content;
+      }
+</style>
 </head>
 <body>
 	<h2>Add Employee</h2>
 
 	<form th:action="@{/employees/add}" th:object="${employee}"
 		method="post">
-
-		First Name: <input type="text" th:field="*{firstName}" /><br /> 
-		Last Name: <input type="text" th:field="*{lastName}" /><br /> 
-		Email: <input type="email" th:field="*{email}" /><br /> 
-		Phone: <input type="text" th:field="*{phone}" /><br /> 
-		Department: <input type="text" th:field="*{department}" /><br /> 
-		Designation: <input type="text" th:field="*{designation}" /><br />
-		Date Of Joining: <input type="date" th:field="*{dateOfJoining}" /><br />
+		First Name: <input type="text" th:field="*{firstName}" required /><br /> 
+		Last Name: <input type="text" th:field="*{lastName}" required /><br /> 
+		Email: <input type="email" th:field="*{email}" required /><br /> 
+		Phone: <input type="text" th:field="*{phone}" required /><br /> 
+		Department: <input type="text" th:field="*{department}" required /><br /> 
+		Designation: <input type="text" th:field="*{designation}" required /><br />
+		Date Of Joining: <input type="date" th:field="*{dateOfJoining}" required /><br />
 		<button type="submit">Save</button>
 	</form>
 

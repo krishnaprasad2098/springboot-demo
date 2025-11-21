@@ -1,35 +1,66 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<title>Employee List</title>
-</head>
-<body>
-	<h1>Employee List</h1>
+  <head>
+    <title>Employee List</title>
+    <style>
+      body {
+        background-color: rgb(219, 228, 231);
+      }
+      h1 {
+        text-align: center;
+      }
+      table {
+        margin: auto;
+      }
+      a {
+        text-decoration: none;
+        font-weight: 500;
+		color: white;
+      }
+      button {
+        padding: 0.5rem;
+        border-radius: 10px;
+		background-color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Employee List</h1>
+    <button>
+      <a th:href="@{/employees/add}">Add New Employee</a>
+    </button>
+    <table border="1" cellspacing="0" cellpadding="10">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Department</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="emp : ${employees}">
+          <td th:text="${emp.id}"></td>
+          <td th:text="${emp.firstName + ' ' + emp.lastName}"></td>
+          <td th:text="${emp.email}"></td>
+          <td th:text="${emp.department}"></td>
 
-	<a th:href="@{/employees/add}">Add New Employee</a>
-
-	<table border="1" cellspacing="0" cellpadding="10">
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>Name</th>
-				<th>Email</th>
-				<th>Department</th>
-				<th>Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="emp : ${employees}">
-				<td th:text="${emp.id}"></td>
-				<td th:text="${emp.firstName + ' ' + emp.lastName}"></td>
-				<td th:text="${emp.email}"></td>
-				<td th:text="${emp.department}"></td>
-
-				<td><a th:href="@{'/employees/edit/' + ${emp.id}}">Edit</a> | <a
-					th:href="@{'/employees/delete/' + ${emp.id}}"
-					onclick="return confirm('Are you sure?')">Delete</a></td>
-			</tr>
-		</tbody>
-	</table>
-</body>
+          <td>
+            <button>
+              <a th:href="@{'/employees/edit/' + ${emp.id}}">Edit</a>
+            </button>
+            |
+            <button>
+              <a
+                th:href="@{'/employees/delete/' + ${emp.id}}"
+                onclick="return confirm('Are you sure?')"
+                >Delete</a
+              >
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
 </html>
