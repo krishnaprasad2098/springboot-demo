@@ -18,7 +18,7 @@ jobs:
 
       - name: Deploy to all ec2 in asg using ssm
         env:
-          DB_URL: "jdbc:mysql://${{ secrets.DB_IP }}:3306/sredemo"
+          DB_URL: jdbc:mysql://${{ secrets.DB_IP }}:3306/sredemo
         run: |
           echo "Pulling the image and deploying it in the container"
 
@@ -42,9 +42,22 @@ jobs:
             --document-name "AWS-RunShellScript" \
             --comment "Deploy Spring Boot Container" \
             --parameters '{"commands": [
-              "sudo -u dockeruser docker pull '${{ secrets.DOCKER_USERNAME }}'/springboot-sredemo:${{ github.event.workflow_run.head_branch }}",
+              "sudo -u dockeruser docker pull '${{ secrets.DOCKER_USERNAME }}'/springboot-sredemo:'${{ github.event.workflow_run.head_branch }}'",
               "sudo -u dockeruser docker stop springboot-sredemo || true",
               "sudo -u dockeruser docker rm springboot-sredemo || true",
-              "sudo -u dockeruser docker run -d --name springboot-sredemo -e SPRING_DATASOURCE_URL=$DB_URL -e SPRING_DATASOURCE_USERNAME=root -e SPRING_DATASOURCE_PASSWORD=root -p 8082:8082 ${{ secrets.DOCKER_USERNAME }}/springboot-sredemo:${{ github.event.workflow_run.head_branch }}"
+              "sudo -u dockeruser docker run -d --name springboot-sredemo -e SPRING_DATASOURCE_URL=\"'"$DB_URL"'\" -e SPRING_DATASOURCE_USERNAME=root -e SPRING_DATASOURCE_PASSWORD=root -p 8082:8082 '${{ secrets.DOCKER_USERNAME }}'/springboot-sredemo:'${{ github.event.workflow_run.head_branch }}'"
             ]}' \
             --region ${{ secrets.AWS_REGION }}
+
+
+          # aws ssm send-command \
+          #   --instance-ids $INSTANCE_IDS \
+          #   --document-name "AWS-RunShellScript" \
+          #   --comment "Deploy Spring Boot Container" \
+          #   --parameters '{"commands": [
+          #     "sudo -u dockeruser docker pull '${{ secrets.DOCKER_USERNAME }}'/springboot-sredemo:${{ github.event.workflow_run.head_branch }}",
+          #     "sudo -u dockeruser docker stop springboot-sredemo || true",
+          #     "sudo -u dockeruser docker rm springboot-sredemo || true",
+          #     "sudo -u dockeruser docker run -d --name springboot-sredemo -e SPRING_DATASOURCE_URL=$DB_URL -e SPRING_DATASOURCE_USERNAME=root -e SPRING_DATASOURCE_PASSWORD=root -p 8082:8082 ${{ secrets.DOCKER_USERNAME }}/springboot-sredemo:${{ github.event.workflow_run.head_branch }}"
+          #   ]}' \
+          #   --region ${{ secrets.AWS_REGION }}
