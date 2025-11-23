@@ -2,8 +2,8 @@ name: 'CI Pipeline'
 
 on:
   push:
-    branches:
-      - 'main'
+    # branches:
+    #   - 'main'
     tags:
       - 'v*'
   pull_request:
@@ -34,7 +34,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
         
       - name: Build docker image
-        run: docker build -t springboot-sredemo:latest
+        run: docker build -t springboot-sredemo:latest .
 
       - name: Push image to docker registry
         id: push-to-docker-hub
