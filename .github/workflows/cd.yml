@@ -45,10 +45,10 @@ jobs:
               "sudo -u dockeruser docker rm springboot-sredemo || true",
               "sudo -u dockeruser docker run -d \
                 --name springboot-sredemo \
-                -e SPRING_DATASOURCE_URL=\"jdbc:mysql://'${{ secrets.DB_IP }}':3306/sredemo\" \
-                -e SPRING_DATASOURCE_USERNAME=\"root\" \
-                -e SPRING_DATASOURCE_PASSWORD=\"root\" \
+                -e SPRING_DATASOURCE_URL="jdbc:mysql://${{ secrets.DB_IP }}:3306/sredemo" \
+                -e SPRING_DATASOURCE_USERNAME="root" \
+                -e SPRING_DATASOURCE_PASSWORD="root" \
                 -p 8081:8082 \
-                '${{ secrets.DOCKER_USERNAME }}'/springboot-sredemo:${{ github.event.workflow_run.head_branch }}"
+                "${{ secrets.DOCKER_USERNAME }}/springboot-sredemo:${{ github.event.workflow_run.head_branch }}""
             ]}' \
             --region ${{ secrets.AWS_REGION }}
