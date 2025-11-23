@@ -51,6 +51,4 @@ jobs:
                 -p 8081:8082 \
                 '${{ secrets.DOCKER_USERNAME }}'/springboot-sredemo:${{ github.event.workflow_run.head_branch }}"
             ]}' \
-              
-            ]}' \
             --region ${{ secrets.AWS_REGION }}
