@@ -35,20 +35,16 @@ jobs:
           fi
           echo "Deploying container to all instances via SSM..."
 
+          DB_URL="jdbc:mysql://${{ secrets.DB_IP }}:3306/sredemo"
+
           aws ssm send-command \
             --instance-ids $INSTANCE_IDS \
             --document-name "AWS-RunShellScript" \
-            --comment "Deploy latest Docker image" \
-            --parameters '{"commands":[
+            --comment "Deploy Spring Boot Container" \
+            --parameters '{"commands": [
               "sudo -u dockeruser docker pull '${{ secrets.DOCKER_USERNAME }}'/springboot-sredemo:${{ github.event.workflow_run.head_branch }}",
               "sudo -u dockeruser docker stop springboot-sredemo || true",
               "sudo -u dockeruser docker rm springboot-sredemo || true",
-              "sudo -u dockeruser docker run -d \
-                --name springboot-sredemo \
-                -e SPRING_DATASOURCE_URL="jdbc:mysql://${{ secrets.DB_IP }}:3306/sredemo" \
-                -e SPRING_DATASOURCE_USERNAME="root" \
-                -e SPRING_DATASOURCE_PASSWORD="root" \
-                -p 8081:8082 \
-                "${{ secrets.DOCKER_USERNAME }}/springboot-sredemo:${{ github.event.workflow_run.head_branch }}""
+              "sudo -u dockeruser docker run -d --name springboot-sredemo -e SPRING_DATASOURCE_URL=${DB_URL} -e SPRING_DATASOURCE_USERNAME=root -e SPRING_DATASOURCE_PASSWORD=root -p 8081:8082 ${{ secrets.DOCKER_USERNAME }}/springboot-sredemo:${{ github.event.workflow_run.head_branch }}"
             ]}' \
             --region ${{ secrets.AWS_REGION }}
