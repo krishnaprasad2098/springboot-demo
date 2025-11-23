@@ -13,55 +13,55 @@ import com.employee_management.service.EmployeeService;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-	private final EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
 
-	@Autowired
-	public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
-		this.employeeRepository = employeeRepository;
-	}
+    @Autowired
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
-	@Override
-	public Employee createEmployee(Employee employee) {
-		 return employeeRepository.save(employee);
-	}
+    @Override
+    public Employee createEmployee(Employee employee) {
+        return employeeRepository.save(employee);
+    }
 
-	@Override
-	public List<Employee> getAllEmployees() {
-		
-		return employeeRepository.findAll();
-	}
+    @Override
+    public List<Employee> getAllEmployees() {
 
-	@Override
-	public Employee getEmployeeById(Long id) {
-		 Optional<Employee> optional = employeeRepository.findById(id);
-		return optional.orElse(null);
-	}
+        return employeeRepository.findAll();
+    }
 
-	@Override
-	public Employee updateEmployee(Long id, Employee employeeDetails) {
-		 Optional<Employee> optional = employeeRepository.findById(id);
+    @Override
+    public Employee getEmployeeById(Long id) {
+        Optional<Employee> optional = employeeRepository.findById(id);
+        return optional.orElse(null);
+    }
 
-	        if (optional.isPresent()) {
-	            Employee existing = optional.get();
+    @Override
+    public Employee updateEmployee(Long id, Employee employeeDetails) {
+        Optional<Employee> optional = employeeRepository.findById(id);
 
-	            existing.setFirstName(employeeDetails.getFirstName());
-	            existing.setLastName(employeeDetails.getLastName());
-	            existing.setEmail(employeeDetails.getEmail());
-	            existing.setDepartment(employeeDetails.getDepartment());
-	            existing.setDesignation(employeeDetails.getDesignation());
-	            existing.setSalary(employeeDetails.getSalary());
-	            existing.setPhone(employeeDetails.getPhone());
-	            existing.setDateOfJoining(employeeDetails.getDateOfJoining());
-	            existing.setStatus(employeeDetails.getStatus());
+        if (optional.isPresent()) {
+            Employee existing = optional.get();
 
-	            return employeeRepository.save(existing);
-	        }
-	        return null;
-	}
+            existing.setFirstName(employeeDetails.getFirstName());
+            existing.setLastName(employeeDetails.getLastName());
+            existing.setEmail(employeeDetails.getEmail());
+            existing.setDepartment(employeeDetails.getDepartment());
+            existing.setDesignation(employeeDetails.getDesignation());
+            existing.setSalary(employeeDetails.getSalary());
+            existing.setPhone(employeeDetails.getPhone());
+            existing.setDateOfJoining(employeeDetails.getDateOfJoining());
+            existing.setStatus(employeeDetails.getStatus());
 
-	@Override
-	public void deleteEmployee(Long id) {
-		employeeRepository.deleteById(id);
-	}
+            return employeeRepository.save(existing);
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteEmployee(Long id) {
+        employeeRepository.deleteById(id);
+    }
 
 }
