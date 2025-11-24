@@ -2,121 +2,118 @@ package com.employee_management.model;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.Id;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="employees")
+@Table(name = "employees")
 public class Employee {
 
-	
-	    @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	    private String firstName;
+    private String firstName;
 
-	    private String lastName;
+    private String lastName;
 
-	    @Column(unique = true)
-	    private String email;
+    @Column(unique = true)
+    private String email;
 
-	    private String department;
+    private String department;
 
-	    private String designation;
+    private String designation;
 
-	    private Double salary;
-	    
-	    @Column(unique = true)
-	    private String phone;
+    private Double salary;
 
-	    private LocalDate dateOfJoining;
+    @Column(unique = true)
+    private String phone;
 
-	    private String status;
+    private LocalDate dateOfJoining;
 
-	    public Long getId() {
-	        return id;
-	    }
+    private String status;
 
-	    public void setId(Long id) {
-	        this.id = id;
-	    }
+    public Long getId() {
+        return id;
+    }
 
-	    public String getFirstName() {
-	        return firstName;
-	    }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	    public void setFirstName(String firstName) {
-	        this.firstName = firstName;
-	    }
+    public String getFirstName() {
+        return firstName;
+    }
 
-	    public String getLastName() {
-	        return lastName;
-	    }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	    public void setLastName(String lastName) {
-	        this.lastName = lastName;
-	    }
+    public String getLastName() {
+        return lastName;
+    }
 
-	    public String getEmail() {
-	        return email;
-	    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	    public void setEmail(String email) {
-	        this.email = email;
-	    }
+    public String getEmail() {
+        return email;
+    }
 
-	    public String getDepartment() {
-	        return department;
-	    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	    public void setDepartment(String department) {
-	        this.department = department;
-	    }
+    public String getDepartment() {
+        return department;
+    }
 
-	    public String getDesignation() {
-	        return designation;
-	    }
+    public void setDepartment(String department) {
+        this.department = department;
+    }
 
-	    public void setDesignation(String designation) {
-	        this.designation = designation;
-	    }
+    public String getDesignation() {
+        return designation;
+    }
 
-	    public Double getSalary() {
-	        return salary;
-	    }
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
 
-	    public void setSalary(Double salary) {
-	        this.salary = salary;
-	    }
+    public Double getSalary() {
+        return salary;
+    }
 
-	    public String getPhone() {
-	        return phone;
-	    }
+    public void setSalary(Double salary) {
+        this.salary = salary;
+    }
 
-	    public void setPhone(String phone) {
-	        this.phone = phone;
-	    }
+    public String getPhone() {
+        return phone;
+    }
 
-	    public LocalDate getDateOfJoining() {
-	        return dateOfJoining;
-	    }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	    public void setDateOfJoining(LocalDate dateOfJoining) {
-	        this.dateOfJoining = dateOfJoining;
-	    }
+    public LocalDate getDateOfJoining() {
+        return dateOfJoining;
+    }
 
-	    public String getStatus() {
-	        return status;
-	    }
+    public void setDateOfJoining(LocalDate dateOfJoining) {
+        this.dateOfJoining = dateOfJoining;
+    }
 
-	    public void setStatus(String status) {
-	        this.status = status;
-	    }
-	}
+    public String getStatus() {
+        return status;
+    }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+}
