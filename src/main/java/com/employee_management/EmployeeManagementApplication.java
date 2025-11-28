@@ -16,5 +16,4 @@ public class EmployeeManagementApplication extends SpringBootServletInitializer 
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(EmployeeManagementApplication.class);
     }
-
 }
