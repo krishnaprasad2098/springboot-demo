@@ -1,19 +1,19 @@
 package com.employee_management.service;
 
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
-
-import com.employee_management.impl.EmployeeServiceImpl;
-import com.employee_management.model.Employee;
-import com.employee_management.repository.EmployeeRepository;
-
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
+
+import com.employee_management.impl.EmployeeServiceImpl;
+import com.employee_management.model.Employee;
+import com.employee_management.repository.EmployeeRepository;
 
 public class EmployeeServiceTest {
 
