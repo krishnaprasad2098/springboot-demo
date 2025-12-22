@@ -6,7 +6,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 
-
 @SpringBootApplication(scanBasePackages = "com.employee_management")
 public class EmployeeManagementApplication extends SpringBootServletInitializer {
 
