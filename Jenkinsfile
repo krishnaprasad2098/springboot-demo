@@ -29,6 +29,8 @@ pipeline {
             }
             steps {
                 sh '''
+                  java -version
+                  mvn -version
                   mvn clean test
                   mvn clean package
                 '''
