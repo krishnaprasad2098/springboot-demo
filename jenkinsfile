@@ -6,6 +6,13 @@ pipeline {
     }
 
     stages {
+        stage('Debug Info') {
+            steps {
+                echo "BRANCH_NAME = ${env.BRANCH_NAME}"
+                echo "CHANGE_ID   = ${env.CHANGE_ID}"
+                echo "CHANGE_TARGET = ${env.CHANGE_TARGET}"
+            }
+        }
 
         stage('Checkout') {
             steps {
@@ -15,7 +22,10 @@ pipeline {
 
         stage('CI - Test & Build') {
             when {
-                branch 'dev'
+                anyOf {
+                    branch 'dev'         // runs on dev branch
+                    changeRequest()      // runs on PRs
+                }
             }
             steps {
                 sh '''
@@ -28,7 +38,7 @@ pipeline {
         stage('CD - Docker Build & Push') {
             when {
                 allOf {
-                    not { changeRequest() }
+                    not { changeRequest() }   // skip PRs
                     anyOf {
                         branch 'dev'
                         branch 'main'
