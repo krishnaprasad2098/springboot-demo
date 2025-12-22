@@ -15,7 +15,7 @@ pipeline {
 
         stage('CI - Test & Build') {
             when {
-                branch 'development'
+                branch 'dev'
             }
             steps {
                 sh '''
@@ -30,7 +30,7 @@ pipeline {
                 allOf {
                     not { changeRequest() }
                     anyOf {
-                        branch 'development'
+                        branch 'dev'
                         branch 'main'
                     }
                 }
