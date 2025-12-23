@@ -95,7 +95,20 @@ pipeline {
             steps {
                 bat '''
                   mvn clean test
-                  mvn clean package
+                '''
+            }
+        }
+
+        stage('CI - Build (DEV)') {
+            when {
+                allOf {
+                    branch 'dev'
+                    not { changeRequest() }
+                }
+            }
+            steps {
+                bat '''
+                  mvn clean package -DskipTests
                 '''
             }
         }
