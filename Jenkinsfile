@@ -43,7 +43,7 @@ pipeline {
                     not { changeRequest() }   // skip PRs
                     anyOf {
                         branch 'dev'
-                        // branch 'main'
+                        branch 'main'
                     }
                 }
             }
