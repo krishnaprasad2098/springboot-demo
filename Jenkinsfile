@@ -68,7 +68,7 @@
 
 
 pipeline {
-    agent linux
+    agent none
 
     environment {
         DOCKER_REPO = "krishnaprasad367/springboot-demo"
