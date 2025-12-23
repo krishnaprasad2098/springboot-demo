@@ -93,7 +93,7 @@ pipeline {
                 }
             }
             steps {
-                sh '''
+                bat '''
                   mvn clean test
                   mvn clean package
                 '''
@@ -121,7 +121,7 @@ pipeline {
                         passwordVariable: 'DOCKER_PASS'
                     )
                 ]) {
-                    sh '''
+                    bat '''
                       echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
                       docker build -t $DOCKER_REPO:$IMAGE_TAG .
                       docker push $DOCKER_REPO:$IMAGE_TAG
