@@ -2,17 +2,15 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_REPO = "krishnaprasad367/springboot-demo"
+        DOCKER_REPO = 'krishnaprasad367/springboot-demo'
     }
 
     stages {
-
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
-
         stage('CI - Test (DEV)') {
             when {
                 allOf {
@@ -26,7 +24,6 @@ pipeline {
                 '''
             }
         }
-
         stage('CI - Build (DEV)') {
             when {
                 allOf {
@@ -52,7 +49,7 @@ pipeline {
                 }
             }
             environment {
-                IMAGE_TAG = "dev-${BUILD_NUMBER}"
+                IMAGE_TAG = "springboot-demo-${BUILD_NUMBER}"
             }
             steps {
                 withCredentials([
@@ -70,10 +67,10 @@ pipeline {
                       docker logout
                     '''
 
-                 //   echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-//                    docker build -t ${DOCKER_IMAGE}:${IMAGE_TAG} .
-//                    docker push ${DOCKER_IMAGE}:${IMAGE_TAG}
-//                    docker logout
+                //   echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                //   docker build -t ${DOCKER_IMAGE}:${IMAGE_TAG} .
+                //   docker push ${DOCKER_IMAGE}:${IMAGE_TAG}
+                //   docker logout
                 }
             }
         }
@@ -86,8 +83,7 @@ pipeline {
                 branch 'dev'
             }
             steps {
-                echo "Deploying DEV image to DEV environment"
-                // placeholder
+                echo 'Deploying DEV image to DEV environment'
             }
         }
 
@@ -98,12 +94,9 @@ pipeline {
             when {
                 branch 'main'
             }
-            environment {
-                IMAGE_TAG = "prod-${BUILD_NUMBER}"
-            }
             steps {
-                echo "Deploying PROD image to PROD environment"
-                // placeholder
+                echo 'Deploying PROD image to PROD environment'
+            // placeholder
             }
         }
     }
