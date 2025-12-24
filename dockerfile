@@ -7,7 +7,7 @@
 # ENTRYPOINT ["java","-jar","/app/app.war"]
 
 
-FROM openjdk:21-slim-bookworm
+FROM eclipse-temurin:8u472-b08-jre-alpine-3.23
 
 # Create a non-privileged user for security
 RUN groupadd -r appuser && useradd -r -g appuser appuser
