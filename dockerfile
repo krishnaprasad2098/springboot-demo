@@ -1,13 +1,24 @@
-FROM openjdk:26-ea-trixie
+# FROM openjdk:26-ea-trixie
+
+# WORKDIR /app
+
+# COPY target/sredemo-0.0.1-SNAPSHOT.war app.war
+
+# ENTRYPOINT ["java","-jar","/app/app.war"]
+
+
+FROM openjdk:21-slim-bookworm
+
+# Create a non-privileged user for security
+RUN groupadd -r appuser && useradd -r -g appuser appuser
 
 WORKDIR /app
 
-COPY target/sredemo-0.0.1-SNAPSHOT.war app.war
+# Copy the artifact and change ownership immediately
+COPY --chown=appuser:appuser target/sredemo-0.0.1-SNAPSHOT.war app.war
 
-ENTRYPOINT ["java","-jar","/app/app.war"]
+# Switch to the non-root user
+USER appuser
 
-# FROM tomcat:9-jdk8
-
-# COPY target/sredemo-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps/sredemo.war
-
-# ENTRYPOINT ["catalina.sh", "run"]
+# Use 'exec' form for better signal handling (SIGTERM)
+ENTRYPOINT ["java", "-jar", "app.war"]
