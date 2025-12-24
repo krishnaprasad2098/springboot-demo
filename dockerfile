@@ -1,4 +1,4 @@
-FROM eclipse-temurin:8u472-b08-jre-alpine-3.23
+FROM eclipse-temurin:21-jre-alpine-3.23
 
 WORKDIR /app
 
