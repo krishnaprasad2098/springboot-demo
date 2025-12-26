@@ -17,7 +17,7 @@ spec:
         image: mysql:8.0
         env:
         - name: MYSQL_DATABASE
-          value: appdb
+          value: sredemo
         - name: MYSQL_USER
           valueFrom:
             secretKeyRef:

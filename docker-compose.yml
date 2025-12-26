@@ -1,16 +1,53 @@
-version: '3.8'
+version: "3.8"
 services:
+  mysql:
+    image: mysql:8.0
+    container_name: sredemo-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: sredemo
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppassword
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
   spring-boot-app:
     build:
       context: .
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     container_name: sredemo-springboot
-    networks:
-      - sredemo
-    ports: 
+    depends_on:
+      - mysql
+    ports:
       - "8082:8082"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://${DB_IP}:3306/sredemo
-      SPRING_DATASOURCE_USERNAME: "${DB_USER:-root}"
-      SPRING_DATASOURCE_PASSWORD: "${DB_PASSWORD:-root}"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/sredemo
+      SPRING_DATASOURCE_USERNAME: appuser
+      SPRING_DATASOURCE_PASSWORD: apppassword
     restart: unless-stopped
+
+volumes:
+  mysql-data:
+
+
+
+
+# version: '3.8'
+# services:
+#   spring-boot-app:
+#     build:
+#       context: .
+#       dockerfile: dockerfile
+#     container_name: sredemo-springboot
+#     networks:
+#       - sredemo
+#     ports: 
+#       - "8082:8082"
+#     environment:
+#       SPRING_DATASOURCE_URL: jdbc:mysql://${DB_IP}:3306/sredemo
+#       SPRING_DATASOURCE_USERNAME: "${DB_USER:-root}"
+#       SPRING_DATASOURCE_PASSWORD: "${DB_PASSWORD:-root}"
+#     restart: unless-stopped
