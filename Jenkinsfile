@@ -45,7 +45,8 @@ pipeline {
             when {
                 allOf {
                     branch 'dev'
-                    not { changeRequest() }
+                    changeRequest()
+                    // not { changeRequest() }
                 }
             }
             environment {
