@@ -113,6 +113,9 @@ pipeline {
                 branch 'main'
                 not { changeRequest() }
             }
+             environment {
+                IMAGE_TAG = "springboot-demo-${env.BUILD_NUMBER}"
+            }
             steps {
                 withCredentials([file(credentialsId: 'KUBECONFIG', variable: 'KUBECONFIG')]) {
                     bat '''
@@ -120,6 +123,8 @@ pipeline {
 
                       kubectl set image deployment/springboot-app \
                         springboot-app=krishnaprasad367/springboot-demo:%IMAGE_TAG% -n springboot-demo-prod
+
+                      kubectl rollout restart deployment/springboot-app -n springboot-demo-prod
 
                       kubectl rollout status deployment/springboot-app -n springboot-demo-prod --timeout=120s
                     '''
