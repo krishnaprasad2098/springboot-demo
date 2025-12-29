@@ -11,7 +11,7 @@ pipeline {
                 checkout scm
             }
         }
-        stage('CI - Test (DEV)') {
+        stage('Test') {
             when {
                 allOf {
                     branch 'dev'
@@ -24,7 +24,7 @@ pipeline {
                 '''
             }
         }
-        stage('CI - Build (DEV)') {
+        stage('Build') {
             when {
                 allOf {
                     branch 'dev'
@@ -38,7 +38,7 @@ pipeline {
             }
         }
 
-        stage('Docker Build & Push - DEV') {
+        stage('Docker Build & Push') {
             when {
                 allOf {
                     branch 'dev'
@@ -81,7 +81,7 @@ pipeline {
                 IMAGE_TAG = "springboot-demo-${env.BUILD_NUMBER}"
             }
             steps {
-                withCredentials([file(credentialsId: 'kubeconfig-springboot-demo-dev', variable: 'KUBECONFIG')]) {
+                withCredentials([file(credentialsId: 'KUBECONFIG', variable: 'KUBECONFIG')]) {
                     bat '''
                       kubectl config use-context springboot-demo-dev-cluster
                       kubectl apply -n springboot-demo-dev -f k8s/
