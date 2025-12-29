@@ -19,13 +19,13 @@ pipeline {
             }
         }
         stage('Test') {
-            when {
-                allOf {
-                    branch 'dev'
-                    // not { changeRequest() }
-                    changeRequest()
-                }
-            }
+            // when {
+            //     allOf {
+            //         branch 'dev'
+            //         // not { changeRequest() }
+            //         changeRequest()
+            //     }
+            // }
             steps {
                 bat '''
                   mvn clean test
@@ -33,12 +33,12 @@ pipeline {
             }
         }
         stage('Build') {
-            when {
-                allOf {
-                    branch 'dev'
-                    not { changeRequest() }
-                }
-            }
+            // when {
+            //     allOf {
+            //         branch 'dev'
+            //         not { changeRequest() }
+            //     }
+            // }
             steps {
                 bat '''
                   mvn clean package -DskipTests
@@ -51,8 +51,8 @@ pipeline {
                 allOf {
                     branch 'dev'
                     // changeRequest()
-                    // not { changeRequest() }
-                    expression { env.CHANGE_ID == null }
+                    not { changeRequest() }
+                    // expression { env.CHANGE_ID == null }
                 }
             }
             environment {
@@ -85,16 +85,16 @@ pipeline {
         stage('Deploy to DEV') {
             when {
                 branch 'dev'
-                // not { changeRequest() }
-                expression { env.CHANGE_ID == null }
+                not { changeRequest() }
+                // expression { env.CHANGE_ID == null }
             }
             environment {
                 IMAGE_TAG = "springboot-demo-${env.BUILD_NUMBER}"
             }
             steps {
                 withCredentials([file(credentialsId: 'KUBECONFIG', variable: 'KUBECONFIG')]) {
+                    //   kubectl config use-context springboot-demo-dev
                     bat '''
-                      kubectl config use-context springboot-demo-dev
                       kubectl apply -n springboot-demo-dev -f k8s/
                       kubectl set image deployment/springboot-app \
                         springboot-app=krishnaprasad367/springboot-demo:%IMAGE_TAG%  -n springboot-demo-dev
