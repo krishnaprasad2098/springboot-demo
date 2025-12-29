@@ -22,10 +22,14 @@ pipeline {
             // when {
             //     allOf {
             //         branch 'dev'
+            //         branch pattern: "feature-.*", comparator:"REGEXP"
             //         // not { changeRequest() }
-            //         changeRequest()
+            //         // changeRequest()
             //     }
             // }
+            when {
+                    expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
+            }
             steps {
                 bat '''
                   mvn clean test
@@ -36,9 +40,13 @@ pipeline {
             // when {
             //     allOf {
             //         branch 'dev'
-            //         not { changeRequest() }
+            //         branch pattern: "feature-.*", comparator:"REGEXP"
+            //         // not { changeRequest() }
             //     }
             // }
+            when {
+                    expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
+            }
             steps {
                 bat '''
                   mvn clean package -DskipTests
