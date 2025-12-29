@@ -38,18 +38,15 @@ pipeline {
             }
         }
 
-        /* =======================
-           BUILD IMAGE – DEV
-        ======================= */
         stage('Docker Build & Push - DEV') {
             when {
                 allOf {
                     branch 'dev'
-                    changeRequest()
-                    // not { changeRequest() }
+                    // changeRequest()
+                    not { changeRequest() }
                 }
             }
-            environment {
+            environment { 
                 IMAGE_TAG = "springboot-demo-${BUILD_NUMBER}"
             }
             steps {
@@ -76,28 +73,33 @@ pipeline {
             }
         }
 
-        /* =======================
-           DEPLOY – DEV
-        ======================= */
         stage('Deploy to DEV') {
             when {
                 branch 'dev'
             }
+            environment {
+                IMAGE_TAG = "springboot-demo-${env.BUILD_NUMBER}"
+            }
             steps {
-                echo 'Deploying DEV image to DEV environment'
+                withCredentials([file(credentialsId: 'kubeconfig-springboot-demo-dev', variable: 'KUBECONFIG')]) {
+                    bat '''
+                      kubectl config use-context springboot-demo-dev-cluster
+                      kubectl apply -n springboot-demo-dev -f k8s/
+                      kubectl set image deployment/springboot-app \
+                        springboot-app=krishnaprasad367/springboot-demo:%IMAGE_TAG%  -n springboot-demo-dev
+                      kubectl rollout status deployment/springboot-app -n springboot-demo-dev
+                    '''
+                }
             }
         }
 
-        /* =======================
-           DEPLOY – PROD (MAIN)
-        ======================= */
         stage('Deploy to PROD') {
             when {
                 branch 'main'
             }
             steps {
                 echo 'Deploying PROD image to PROD environment'
-            // placeholder
+                // TODO: Deploy the app to prod environment
             }
         }
     }

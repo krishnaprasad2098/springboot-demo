@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: springboot-app
-        image: sredemo-springboot:1.1
+        image: krishnaprasad367/sredemo-springboot
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8082
