@@ -11,11 +11,19 @@ pipeline {
                 checkout scm
             }
         }
-        stage('CI - Test (DEV)') {
+        stage('Debug'){
+            steps{
+                echo "BRANCH_NAME = ${env.BRANCH_NAME}"
+                echo "CHANGE_ID = ${env.CHANGE_ID}"
+                echo "CHANGE_TARGET = ${env.CHANGE_TARGET}"
+            }
+        }
+        stage('Test') {
             when {
                 allOf {
                     branch 'dev'
-                    not { changeRequest() }
+                    // not { changeRequest() }
+                    changeRequest()
                 }
             }
             steps {
@@ -24,7 +32,7 @@ pipeline {
                 '''
             }
         }
-        stage('CI - Build (DEV)') {
+        stage('Build') {
             when {
                 allOf {
                     branch 'dev'
@@ -38,18 +46,16 @@ pipeline {
             }
         }
 
-        /* =======================
-           BUILD IMAGE – DEV
-        ======================= */
-        stage('Docker Build & Push - DEV') {
+        stage('Docker Build & Push') {
             when {
                 allOf {
                     branch 'dev'
-                    changeRequest()
+                    // changeRequest()
                     // not { changeRequest() }
+                    expression {env.CHANGE_ID == null }
                 }
             }
-            environment {
+            environment { 
                 IMAGE_TAG = "springboot-demo-${BUILD_NUMBER}"
             }
             steps {
@@ -76,28 +82,35 @@ pipeline {
             }
         }
 
-        /* =======================
-           DEPLOY – DEV
-        ======================= */
         stage('Deploy to DEV') {
             when {
                 branch 'dev'
+                // not { changeRequest() }
+                expression {env.CHANGE_ID == null }
+            }
+            environment {
+                IMAGE_TAG = "springboot-demo-${env.BUILD_NUMBER}"
             }
             steps {
-                echo 'Deploying DEV image to DEV environment'
+                withCredentials([file(credentialsId: 'KUBECONFIG', variable: 'KUBECONFIG')]) {
+                    bat '''
+                      kubectl config use-context springboot-demo-dev
+                      kubectl apply -n springboot-demo-dev -f k8s/
+                      kubectl set image deployment/springboot-app \
+                        springboot-app=krishnaprasad367/springboot-demo:%IMAGE_TAG%  -n springboot-demo-dev
+                      kubectl rollout status deployment/springboot-app -n springboot-demo-dev
+                    '''
+                }
             }
         }
 
-        /* =======================
-           DEPLOY – PROD (MAIN)
-        ======================= */
         stage('Deploy to PROD') {
             when {
                 branch 'main'
             }
             steps {
                 echo 'Deploying PROD image to PROD environment'
-            // placeholder
+                // TODO: Deploy the app to prod environment
             }
         }
     }
