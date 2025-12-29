@@ -113,6 +113,9 @@ pipeline {
                 branch 'main'
                 not { changeRequest() }
             }
+             environment {
+                IMAGE_TAG = "springboot-demo-${env.BUILD_NUMBER}"
+            }
             steps {
                 withCredentials([file(credentialsId: 'KUBECONFIG', variable: 'KUBECONFIG')]) {
                     bat '''
