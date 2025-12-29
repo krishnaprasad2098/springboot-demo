@@ -22,7 +22,7 @@ pipeline {
             when {
                 allOf {
                     branch 'dev'
-                    branch pattern: "feature/.*", comparator:"REGEXP"
+                    branch pattern: "feature-.*", comparator:"REGEXP"
                     // not { changeRequest() }
                     // changeRequest()
                 }
@@ -38,7 +38,7 @@ pipeline {
             when {
                 allOf {
                     branch 'dev'
-                    branch pattern: "feature/.*", comparator:"REGEXP"
+                    branch pattern: "feature-.*", comparator:"REGEXP"
                     // not { changeRequest() }
                 }
             }
