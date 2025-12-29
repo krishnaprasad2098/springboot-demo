@@ -11,8 +11,8 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Debug'){
-            steps{
+        stage('Debug') {
+            steps {
                 echo "BRANCH_NAME = ${env.BRANCH_NAME}"
                 echo "CHANGE_ID = ${env.CHANGE_ID}"
                 echo "CHANGE_TARGET = ${env.CHANGE_TARGET}"
@@ -52,11 +52,11 @@ pipeline {
                     branch 'dev'
                     // changeRequest()
                     // not { changeRequest() }
-                    expression {env.CHANGE_ID == null }
+                    expression { env.CHANGE_ID == null }
                 }
             }
-            environment { 
-                IMAGE_TAG = "springboot-demo-${BUILD_NUMBER}"
+            environment {
+                IMAGE_TAG = "springboot-demo-${env.BUILD_NUMBER}"
             }
             steps {
                 withCredentials([
@@ -86,7 +86,7 @@ pipeline {
             when {
                 branch 'dev'
                 // not { changeRequest() }
-                expression {env.CHANGE_ID == null }
+                expression { env.CHANGE_ID == null }
             }
             environment {
                 IMAGE_TAG = "springboot-demo-${env.BUILD_NUMBER}"
@@ -110,7 +110,7 @@ pipeline {
             }
             steps {
                 echo 'Deploying PROD image to PROD environment'
-                // TODO: Deploy the app to prod environment
+            // TODO: Deploy the app to prod environment
             }
         }
     }
