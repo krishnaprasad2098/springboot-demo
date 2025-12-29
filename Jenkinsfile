@@ -62,7 +62,7 @@ pipeline {
                 }
             }
             environment {
-                IMAGE_TAG = "springboot-demo-${GIT_COMMIT}"
+                IMAGE_TAG = "springboot-demo-${env.BUILD_NUMBER}"
             }
             steps {
                 withCredentials([
@@ -85,6 +85,9 @@ pipeline {
                 //   docker push ${DOCKER_IMAGE}:${IMAGE_TAG}
                 //   docker logout
                 }
+                    // 🔑 Save image tag for promotion
+                    writeFile file: 'image-tag.txt', text: IMAGE_TAG
+                    archiveArtifacts artifacts: 'image-tag.txt', fingerprint: true
             }
         }
 
@@ -94,7 +97,7 @@ pipeline {
                 not { changeRequest() }
             }
             environment {
-                IMAGE_TAG = "springboot-demo-${GIT_COMMIT}"
+                IMAGE_TAG = "springboot-demo-${env.BUILD_NUMBER}"
             }
             steps {
                 withCredentials([file(credentialsId: 'KUBECONFIG', variable: 'KUBECONFIG')]) {
@@ -114,9 +117,20 @@ pipeline {
                 not { changeRequest() }
             }
             environment {
-                IMAGE_TAG = "springboot-demo-${GIT_COMMIT}"
+                IMAGE_TAG = "springboot-demo-${env.BUILD_NUMBER}"
             }
             steps {
+                    // 🔑 Pull image tag from DEV pipeline
+                copyArtifacts(
+                    projectName: 'springboot-demo/dev',
+                    selector: lastSuccessful(),
+                    filter: 'image-tag.txt'
+                )
+
+                script {
+                    env.IMAGE_TAG = readFile('image-tag.txt').trim()
+                    echo "Promoting image: ${IMAGE_TAG}"
+                }
                 withCredentials([file(credentialsId: 'KUBECONFIG', variable: 'KUBECONFIG')]) {
                     bat '''
                       kubectl apply -n springboot-demo-prod -f k8s/
