@@ -19,15 +19,17 @@ pipeline {
             }
         }
         stage('Test') {
+            // when {
+            //     allOf {
+            //         branch 'dev'
+            //         branch pattern: "feature-.*", comparator:"REGEXP"
+            //         // not { changeRequest() }
+            //         // changeRequest()
+            //     }
+            // }
             when {
-                allOf {
-                    branch 'dev'
-                    branch pattern: "feature-.*", comparator:"REGEXP"
-                    // not { changeRequest() }
-                    // changeRequest()
-                }
+                    expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
             }
-
             steps {
                 bat '''
                   mvn clean test
@@ -35,12 +37,15 @@ pipeline {
             }
         }
         stage('Build') {
+            // when {
+            //     allOf {
+            //         branch 'dev'
+            //         branch pattern: "feature-.*", comparator:"REGEXP"
+            //         // not { changeRequest() }
+            //     }
+            // }
             when {
-                allOf {
-                    branch 'dev'
-                    branch pattern: "feature-.*", comparator:"REGEXP"
-                    // not { changeRequest() }
-                }
+                    expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
             }
             steps {
                 bat '''
