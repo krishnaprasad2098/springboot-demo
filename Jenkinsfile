@@ -116,11 +116,7 @@ pipeline {
                 branch 'main'
                 not { changeRequest() }
             }
-            environment {
-                IMAGE_TAG = "springboot-demo-${env.BUILD_NUMBER}"
-            }
             steps {
-                    // 🔑 Pull image tag from DEV pipeline
                 copyArtifacts(
                     projectName: 'springboot-demo/dev',
                     selector: lastSuccessful(),
@@ -129,8 +125,9 @@ pipeline {
 
                 script {
                     env.IMAGE_TAG = readFile('image-tag.txt').trim()
-                    echo "Promoting image: ${IMAGE_TAG}"
+                    echo "Promoting image from DEV: ${IMAGE_TAG}"
                 }
+
                 withCredentials([file(credentialsId: 'KUBECONFIG', variable: 'KUBECONFIG')]) {
                     bat '''
                       kubectl apply -n springboot-demo-prod -f k8s/
