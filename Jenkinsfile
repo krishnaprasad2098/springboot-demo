@@ -59,7 +59,6 @@ pipeline {
                 allOf {
                     branch 'dev'
                     not { changeRequest() }
-                    // expression { env.CHANGE_ID == null }
                 }
             }
             environment {
@@ -93,14 +92,12 @@ pipeline {
             when {
                 branch 'dev'
                 not { changeRequest() }
-                // expression { env.CHANGE_ID == null }
             }
             environment {
                 IMAGE_TAG = "springboot-demo-${env.BUILD_NUMBER}"
             }
             steps {
                 withCredentials([file(credentialsId: 'KUBECONFIG', variable: 'KUBECONFIG')]) {
-                    //   kubectl config use-context springboot-demo-dev
                     bat '''
                       kubectl apply -n springboot-demo-dev -f k8s/
                       kubectl set image deployment/springboot-app \
@@ -114,10 +111,17 @@ pipeline {
         stage('Deploy to PROD') {
             when {
                 branch 'main'
+                not { changeRequest() }
             }
             steps {
-                echo 'Deploying PROD image to PROD environment'
-            // TODO: Deploy the app to prod environment
+                withCredentials([file(credentialsId: 'KUBECONFIG', variable: 'KUBECONFIG')]) {
+                    bat '''
+                      kubectl apply -n springboot-demo-prod -f k8s/
+                      kubectl set image deployment/springboot-app \
+                        springboot-app=krishnaprasad367/springboot-demo:%IMAGE_TAG% -n springboot-demo-prod
+                      kubectl rollout status deployment/springboot-app -n springboot-demo-prod
+                    '''
+                }
             }
         }
     }
