@@ -50,7 +50,6 @@ pipeline {
             when {
                 allOf {
                     branch 'dev'
-                    // changeRequest()
                     not { changeRequest() }
                     // expression { env.CHANGE_ID == null }
                 }
@@ -97,7 +96,7 @@ pipeline {
                     bat '''
                       kubectl apply -n springboot-demo-dev -f k8s/
                       kubectl set image deployment/springboot-app \
-                        springboot-app=krishnaprasad367/springboot-demo:%IMAGE_TAG%  -n springboot-demo-dev
+                        springboot-app=krishnaprasad367/springboot-demo:%IMAGE_TAG% -n springboot-demo-dev
                       kubectl rollout status deployment/springboot-app -n springboot-demo-dev
                     '''
                 }
