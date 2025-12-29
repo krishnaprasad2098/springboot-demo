@@ -11,11 +11,19 @@ pipeline {
                 checkout scm
             }
         }
+        stage('Debug'){
+            steps{
+                echo "BRANCH_NAME = ${env.BRANCH_NAME}"
+                echo "CHANGE_ID = ${env.CHANGE_ID}"
+                echo "CHANGE_TARGET = ${env.CHANGE_TARGET}"
+            }
+        }
         stage('Test') {
             when {
                 allOf {
                     branch 'dev'
-                    not { changeRequest() }
+                    // not { changeRequest() }
+                    changeRequest()
                 }
             }
             steps {
@@ -43,7 +51,8 @@ pipeline {
                 allOf {
                     branch 'dev'
                     // changeRequest()
-                    not { changeRequest() }
+                    // not { changeRequest() }
+                    expression {env.CHANGE_ID == null }
                 }
             }
             environment { 
@@ -76,6 +85,8 @@ pipeline {
         stage('Deploy to DEV') {
             when {
                 branch 'dev'
+                // not { changeRequest() }
+                expression {env.CHANGE_ID == null }
             }
             environment {
                 IMAGE_TAG = "springboot-demo-${env.BUILD_NUMBER}"
@@ -83,7 +94,7 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'KUBECONFIG', variable: 'KUBECONFIG')]) {
                     bat '''
-                      kubectl config use-context springboot-demo-dev-cluster
+                      kubectl config use-context springboot-demo-dev
                       kubectl apply -n springboot-demo-dev -f k8s/
                       kubectl set image deployment/springboot-app \
                         springboot-app=krishnaprasad367/springboot-demo:%IMAGE_TAG%  -n springboot-demo-dev
