@@ -62,7 +62,7 @@ pipeline {
                 }
             }
             environment {
-                IMAGE_TAG = "springboot-demo-${env.BUILD_NUMBER}"
+                IMAGE_TAG = "springboot-demo-${GIT_COMMIT}"
             }
             steps {
                 withCredentials([
@@ -94,7 +94,7 @@ pipeline {
                 not { changeRequest() }
             }
             environment {
-                IMAGE_TAG = "springboot-demo-${env.BUILD_NUMBER}"
+                IMAGE_TAG = "springboot-demo-${GIT_COMMIT}"
             }
             steps {
                 withCredentials([file(credentialsId: 'KUBECONFIG', variable: 'KUBECONFIG')]) {
@@ -114,7 +114,7 @@ pipeline {
                 not { changeRequest() }
             }
             environment {
-                IMAGE_TAG = "springboot-demo-${env.BUILD_NUMBER}"
+                IMAGE_TAG = "springboot-demo-${GIT_COMMIT}"
             }
             steps {
                 withCredentials([file(credentialsId: 'KUBECONFIG', variable: 'KUBECONFIG')]) {
