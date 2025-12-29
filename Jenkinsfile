@@ -19,13 +19,13 @@ pipeline {
             }
         }
         stage('Test') {
-            when {
-                allOf {
-                    branch 'dev'
-                    // not { changeRequest() }
-                    changeRequest()
-                }
-            }
+            // when {
+            //     allOf {
+            //         branch 'dev'
+            //         // not { changeRequest() }
+            //         changeRequest()
+            //     }
+            // }
             steps {
                 bat '''
                   mvn clean test
@@ -33,12 +33,12 @@ pipeline {
             }
         }
         stage('Build') {
-            when {
-                allOf {
-                    branch 'dev'
-                    not { changeRequest() }
-                }
-            }
+            // when {
+            //     allOf {
+            //         branch 'dev'
+            //         not { changeRequest() }
+            //     }
+            // }
             steps {
                 bat '''
                   mvn clean package -DskipTests
