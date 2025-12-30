@@ -45,6 +45,7 @@ pipeline {
             when {
                     expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
             }
+            
             steps {
                 sh '''
                   mvn clean package -DskipTests
