@@ -18,23 +18,23 @@ pipeline {
                 echo "CHANGE_TARGET = ${env.CHANGE_TARGET}"
             }
         }
-        // stage('Test') {
-        //     // when {
-        //     //     allOf {
-        //     //         branch 'dev'
-        //     //         // not { changeRequest() }
-        //     //         // changeRequest()
-        //     //     }
-        //     // }
-        //     when {
-        //             expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
-        //     }
-        //     steps {
-        //         bat '''
-        //           mvn clean test
-        //         '''
-        //     }
-        // }
+        stage('Test') {
+            // when {
+            //     allOf {
+            //         branch 'dev'
+            //         // not { changeRequest() }
+            //         // changeRequest()
+            //     }
+            // }
+            when {
+                    expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
+            }
+            steps {
+                sh '''
+                  mvn clean test
+                '''
+            }
+        }
         stage('Build') {
             // when {
             //     allOf {
@@ -44,9 +44,10 @@ pipeline {
             // }
             when {
                     expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
+                    not { changeRequest() }
             }
             steps {
-                bat '''
+                sh '''
                   mvn clean package -DskipTests
                 '''
             }
