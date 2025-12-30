@@ -18,29 +18,27 @@ pipeline {
                 echo "CHANGE_TARGET = ${env.CHANGE_TARGET}"
             }
         }
-        stage('Test') {
-            // when {
-            //     allOf {
-            //         branch 'dev'
-            //         branch pattern: "feature-.*", comparator:"REGEXP"
-            //         // not { changeRequest() }
-            //         // changeRequest()
-            //     }
-            // }
-            when {
-                    expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
-            }
-            steps {
-                bat '''
-                  mvn clean test
-                '''
-            }
-        }
+        // stage('Test') {
+        //     // when {
+        //     //     allOf {
+        //     //         branch 'dev'
+        //     //         // not { changeRequest() }
+        //     //         // changeRequest()
+        //     //     }
+        //     // }
+        //     when {
+        //             expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
+        //     }
+        //     steps {
+        //         bat '''
+        //           mvn clean test
+        //         '''
+        //     }
+        // }
         stage('Build') {
             // when {
             //     allOf {
             //         branch 'dev'
-            //         branch pattern: "feature-.*", comparator:"REGEXP"
             //         // not { changeRequest() }
             //     }
             // }
@@ -85,7 +83,6 @@ pipeline {
                 //   docker push ${DOCKER_IMAGE}:${IMAGE_TAG}
                 //   docker logout
                 }
-                    // 🔑 Save image tag for promotion
                     writeFile file: 'image-tag.txt', text: IMAGE_TAG
                     archiveArtifacts artifacts: 'image-tag.txt', fingerprint: true
             }
