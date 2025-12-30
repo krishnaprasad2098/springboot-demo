@@ -44,6 +44,7 @@ pipeline {
             // }
             when {
                     expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
+                    not { changeRequest() }
             }
             steps {
                 sh '''
