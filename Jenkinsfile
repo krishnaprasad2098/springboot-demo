@@ -27,6 +27,7 @@ pipeline {
             //     }
             // }
             when {
+                    changeRequest()
                     expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
             }
             steps {
@@ -43,6 +44,7 @@ pipeline {
             //     }
             // }
             when {
+                    changeRequest()
                     expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
             }
             steps {
