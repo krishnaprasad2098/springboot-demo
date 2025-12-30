@@ -4,11 +4,13 @@ services:
     image: mysql:8.0
     container_name: sredemo-mysql
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
       MYSQL_DATABASE: sredemo
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: appuser
-      MYSQL_PASSWORD: apppassword
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - mysql-data:/var/lib/mysql
     ports:
@@ -23,10 +25,12 @@ services:
       - mysql
     ports:
       - "8082:8082"
+    env_file:
+      - .env
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/sredemo
-      SPRING_DATASOURCE_USERNAME: appuser
-      SPRING_DATASOURCE_PASSWORD: apppassword
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
     restart: unless-stopped
 
 volumes:
