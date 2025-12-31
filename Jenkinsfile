@@ -21,7 +21,7 @@ pipeline {
         stage('Test') {
             when {
                 anyOf {
-                    changeRequest(target: dev)
+                    changeRequest()
                     expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
                 }
             }
@@ -34,7 +34,7 @@ pipeline {
         stage('Build') {
             when {
                 anyOf {
-                    changeRequest(target: dev)
+                    changeRequest()
                     expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
                 }
             }
