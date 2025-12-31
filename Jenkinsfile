@@ -23,13 +23,6 @@ pipeline {
                 anyOf {
                     changeRequest()
                     expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
-
-                    allOf {
-                        not { changeRequest() }
-                        anyOf {
-                            branch 'dev'
-                        }
-                    }
                 }
             }
             steps {
