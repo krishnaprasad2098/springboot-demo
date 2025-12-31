@@ -33,7 +33,7 @@ pipeline {
         }
         stage('Build') {
             when {
-                anyOf{
+                anyOf {
                     changeRequest()
                     expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
                 }
@@ -69,13 +69,13 @@ pipeline {
                       docker push ${DOCKER_IMAGE}:${IMAGE_TAG}
                       docker logout
                     '''
-                    // bat '''
-                    //   docker version
-                    //   echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
-                    //   docker build -t %DOCKER_REPO%:%IMAGE_TAG% .
-                    //   docker push %DOCKER_REPO%:%IMAGE_TAG%
-                    //   docker logout
-                    // '''
+                // bat '''
+                //   docker version
+                //   echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
+                //   docker build -t %DOCKER_REPO%:%IMAGE_TAG% .
+                //   docker push %DOCKER_REPO%:%IMAGE_TAG%
+                //   docker logout
+                // '''
                 }
                     writeFile file: 'image-tag.txt', text: IMAGE_TAG
                     archiveArtifacts artifacts: 'image-tag.txt', fingerprint: true
