@@ -21,7 +21,7 @@ pipeline {
         stage('Test') {
             when {
                 anyOf {
-                    changeRequest()
+                    changeRequest(target: dev)
                     expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
                 }
             }
@@ -34,7 +34,7 @@ pipeline {
         stage('Build') {
             when {
                 anyOf {
-                    changeRequest()
+                    changeRequest(target: dev)
                     expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
                 }
             }
@@ -122,7 +122,9 @@ pipeline {
                 withCredentials([file(credentialsId: 'KUBECONFIG', variable: 'KUBECONFIG')]) {
                     sh '''
                       kubectl apply -n springboot-demo-prod -f k8s/
-                      kubectl set image deployment/springboot-app springboot-app=krishnaprasad367/springboot-demo:%IMAGE_TAG% -n springboot-demo-prod
+                      kubectl set image deployment/springboot-app \
+                        springboot-app=krishnaprasad367/springboot-demo:${IMAGE_TAG} \
+                        -n springboot-demo-prod
                       kubectl rollout status deployment/springboot-app -n springboot-demo-prod
                     '''
                 }
