@@ -19,16 +19,11 @@ pipeline {
             }
         }
         stage('Test') {
-            // when {
-            //     allOf {
-            //         branch 'dev'
-            //         // not { changeRequest() }
-            //         // changeRequest()
-            //     }
-            // }
             when {
+                anyOf {
                     changeRequest()
                     expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
+                }
             }
             steps {
                 sh '''
@@ -37,15 +32,11 @@ pipeline {
             }
         }
         stage('Build') {
-            // when {
-            //     allOf {
-            //         branch 'dev'
-            //         // not { changeRequest() }
-            //     }
-            // }
             when {
+                anyOf{
                     changeRequest()
                     expression { env.BRANCH_NAME == 'dev' || env.BRANCH_NAME ==~ /feature-.*/ }
+                }
             }
             steps {
                 sh '''
@@ -72,18 +63,19 @@ pipeline {
                         passwordVariable: 'DOCKER_PASS'
                     )
                 ]) {
-                    bat '''
-                      docker version
-                      echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
-                      docker build -t %DOCKER_REPO%:%IMAGE_TAG% .
-                      docker push %DOCKER_REPO%:%IMAGE_TAG%
+                    sh '''
+                      echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                      docker build -t ${DOCKER_IMAGE}:${IMAGE_TAG} .
+                      docker push ${DOCKER_IMAGE}:${IMAGE_TAG}
                       docker logout
                     '''
-
-                //   echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                //   docker build -t ${DOCKER_IMAGE}:${IMAGE_TAG} .
-                //   docker push ${DOCKER_IMAGE}:${IMAGE_TAG}
-                //   docker logout
+                    // bat '''
+                    //   docker version
+                    //   echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin
+                    //   docker build -t %DOCKER_REPO%:%IMAGE_TAG% .
+                    //   docker push %DOCKER_REPO%:%IMAGE_TAG%
+                    //   docker logout
+                    // '''
                 }
                     writeFile file: 'image-tag.txt', text: IMAGE_TAG
                     archiveArtifacts artifacts: 'image-tag.txt', fingerprint: true
@@ -100,7 +92,7 @@ pipeline {
             }
             steps {
                 withCredentials([file(credentialsId: 'KUBECONFIG', variable: 'KUBECONFIG')]) {
-                    bat '''
+                    sh '''
                       kubectl apply -n springboot-demo-dev -f k8s/
                       kubectl set image deployment/springboot-app \
                         springboot-app=krishnaprasad367/springboot-demo:%IMAGE_TAG% -n springboot-demo-dev
@@ -128,7 +120,7 @@ pipeline {
                 }
 
                 withCredentials([file(credentialsId: 'KUBECONFIG', variable: 'KUBECONFIG')]) {
-                    bat '''
+                    sh '''
                       kubectl apply -n springboot-demo-prod -f k8s/
                       kubectl set image deployment/springboot-app springboot-app=krishnaprasad367/springboot-demo:%IMAGE_TAG% -n springboot-demo-prod
                       kubectl rollout status deployment/springboot-app -n springboot-demo-prod
