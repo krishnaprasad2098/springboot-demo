@@ -5,8 +5,8 @@ import java.util.List;
 import com.employee_management.model.Employee;
 
 public interface EmployeeService {
-	
-	Employee createEmployee(Employee employee);
+
+    Employee createEmployee(Employee employee);
 
     List<Employee> getAllEmployees();
 
