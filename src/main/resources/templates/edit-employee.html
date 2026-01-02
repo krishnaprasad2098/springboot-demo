@@ -1,47 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<title>Edit Employee</title>
-<style>
-
-	h2 {
-		text-align: center;
-	}
-	form{
-		display: flex;
-		flex-direction: column;
-		gap: 1px;
-	}
-	input{
-		max-width: fit-content;
-		padding: .25rem;
-		border-radius: .3rem;
-	}
-	button {
-		padding: 0.5rem;
+  <head>
+    <title>Edit Employee</title>
+    <style>
+      h2 {
+        text-align: center;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+      }
+      input {
+        max-width: fit-content;
+        padding: 0.25rem;
+        border-radius: 0.3rem;
+      }
+      button {
+        padding: 0.5rem;
         border-radius: 10px;
-		background-color: blue;
-		color: white;
-		max-width: fit-content;
-	}
-	</style>
-</head>
-<body>
-	<h2>Edit Employee</h2>
+        background-color: blue;
+        color: white;
+        max-width: fit-content;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Edit Employee</h2>
 
-	<form th:action="@{'/employees/edit/' + ${employee.id}}"
-		th:object="${employee}" method="post">
-
-		First Name: <input type="text" th:field="*{firstName}" /> <br />
-		Last Name: <input type="text" th:field="*{lastName}" /><br /> 
-		Email: <input type="email" th:field="*{email}" /><br /> 
-		Phone: <input type="text" th:field="*{phone}" /><br /> 
-		Department: <input type="text" th:field="*{department}" /><br /> 
-		Designation: <input type="text" th:field="*{designation}" /><br /> 
-		Date of Joining: <input type="date" th:field="*{dateOfJoining}" /><br /> 
-		Salary: <input type="number" th:field="*{salary}" /><br />
-		<button type="submit">Update</button>
-	</form>
-
-</body>
+    <form
+      th:action="@{'/employees/edit/' + ${employee.id}}"
+      th:object="${employee}"
+      method="post"
+    >
+      First Name: <input type="text" th:field="*{firstName}" /> <br />
+      Last Name: <input type="text" th:field="*{lastName}" /><br />
+      Email: <input type="email" th:field="*{email}" /><br />
+      Phone: <input type="text" th:field="*{phone}" /><br />
+      Department: <input type="text" th:field="*{department}" /><br />
+      Designation: <input type="text" th:field="*{designation}" /><br />
+      Date of Joining: <input type="date" th:field="*{dateOfJoining}" /><br />
+      Salary: <input type="number" th:field="*{salary}" /><br />
+      <button type="submit">Update</button>
+    </form>
+  </body>
 </html>
