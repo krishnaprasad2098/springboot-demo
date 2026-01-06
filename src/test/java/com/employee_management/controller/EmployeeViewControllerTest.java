@@ -18,7 +18,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.springframework.boot.test.mock.mockito.MockBean;
 import com.employee_management.service.EmployeeService;
 
-
 @WebMvcTest(EmployeeViewController.class)
 // profile added for jenkins test purpose
 @ActiveProfiles("test")
@@ -41,6 +40,3 @@ public class EmployeeViewControllerTest {
                 .andExpect(model().attributeExists("employees"));
     }
 }
-
-
-
